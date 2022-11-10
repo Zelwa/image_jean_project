@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+    restart: always
+    ports:
+      - '6379:6379'
+
+  python_jean:
+    depends_on:
+      - redis
+    build: .
+    ports:
+      - "80:5000"
+    restart: always
+
+volumes:
+  redis_data: {}
