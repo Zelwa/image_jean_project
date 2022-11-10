@@ -1,7 +1,20 @@
-FROM python:3.8
+# base image
+FROM python:3.8-alpine3.14
 
-ADD . /app/
+# copy just the requirements.txt first to leverage Docker cache
+# install all dependencies for Python app
+COPY ./requirements.txt /app/requirements.txt
+
 WORKDIR /app
+
+# install dependencies in requirements.txt
 RUN pip install -r requirements.txt
 
-CMD python main.py
+# copy all content to work directory /app
+COPY . /app
+
+# specify the port number the container should expose
+EXPOSE 5000
+
+# run the application
+CMD ["python", "/app/main.py"]
